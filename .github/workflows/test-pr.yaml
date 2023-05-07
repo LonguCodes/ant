@@ -1,0 +1,27 @@
+name: PR - test
+on:
+  pull_request:
+
+
+jobs:
+  test:
+    name: Setup, Build, Publish
+    runs-on: [ self-hosted ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Test affected apps
+        run: yarn nx test api
