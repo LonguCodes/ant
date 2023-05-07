@@ -7,9 +7,6 @@ resources:
 
 patches:
   - target:
-      kind: Deployment
-      labelSelector: "role=api"
-  - target:
       kind: IngressRoute
       labelSelector: "role=api"
     patch: |-
