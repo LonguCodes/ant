@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: docker.longu.dev/ant-api:develop-latest
+          image: docker.longu.dev/ant-api:dev-latest
           envFrom:
             - configMapRef:
                 name: api-config
