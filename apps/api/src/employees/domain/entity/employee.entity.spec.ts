@@ -1,6 +1,8 @@
 import { makeBuilder } from '@ant-recruitment/test';
 import { EmployeeEntity } from './employee.entity';
 import { faker } from '@faker-js/faker';
+import { EmployeeNotFoundError } from '../error/employee-not-found.error';
+import {InvalidManagementChainError} from "../error/invalid-management-chain.error";
 
 describe('EmployeeEntity', () => {
   const builder = makeBuilder(EmployeeEntity, () => ({
@@ -50,7 +52,7 @@ describe('EmployeeEntity', () => {
       });
 
       expect(() => manager1.assignManager(employee)).toThrowError(
-        'Oops | TODO'
+        InvalidManagementChainError
       );
     });
   });

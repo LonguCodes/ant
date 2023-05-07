@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
 
-export class IdPayload {
+export class TeamResponseDto {
   @ApiProperty()
-  @Expose()
   id: string;
+
+  @ApiProperty()
+  name: string;
 }

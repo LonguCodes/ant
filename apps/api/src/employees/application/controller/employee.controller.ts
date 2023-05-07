@@ -27,6 +27,12 @@ import { EmployeeNotFoundError } from '../../domain/error/employee-not-found.err
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IdPayload } from '../../../common/interfaces/id.payload';
 import { EmployeeResponseDto } from '../response/employee.response.dto';
+import { TeamResponseDto } from '../response/team.response.dto';
+import { GetTeamByEmployeeQuery } from '../../domain/query/get-team-by-employee.query';
+import { TeamNotFoundError } from '../../domain/error/team-not-found.error';
+import { EmployeeWithoutTeamError } from '../../domain/error/employee-without-team.error';
+import { AssignToTeamPayloadDto } from '../payload/assign-to-team.payload.dto';
+import { AssignToTeamCommand } from '../../domain/command/assign-to-team.command';
 
 @Controller('employees')
 @ApiTags('employees')
@@ -145,5 +151,31 @@ export class EmployeeController {
   })
   async getAllEmployees() {
     return this.queryBus.execute(new GetEmployeesQuery());
+  }
+
+  @Get(':employeeId/team')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: TeamResponseDto,
+    isArray: true,
+  })
+  async getTeam(@Param() { employeeId }: EmployeeIdPayloadDto) {
+    return this.queryBus
+      .execute(new GetTeamByEmployeeQuery(employeeId))
+      .rethrowAs(EmployeeNotFoundError, NotFoundException)
+      .rethrowAs(TeamNotFoundError, NotFoundException)
+      .rethrowAs(EmployeeWithoutTeamError, NotFoundException);
+  }
+
+  @Post(':employeeId/team/:teamId')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Employee assigned to team',
+  })
+  async assignToTeam(@Param() { employeeId, teamId }: AssignToTeamPayloadDto) {
+    return this.commandBus
+      .execute(new AssignToTeamCommand(employeeId, teamId))
+      .rethrowAs(EmployeeNotFoundError, NotFoundException)
+      .rethrowAs(TeamNotFoundError, NotFoundException);
   }
 }
