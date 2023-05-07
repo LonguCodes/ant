@@ -3,6 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
+import '@longucodes/promise';
 import {
   Logger,
   ValidationPipe,

@@ -4,6 +4,7 @@ import {
   IEmployeeRepository,
 } from '../repository/employee.repository';
 import { Inject } from '@nestjs/common';
+import {EmployeeNotFoundError} from "../error/employee-not-found.error";
 
 export class DeleteEmployeeCommand {
   constructor(public readonly employeeId: string) {}
@@ -20,16 +21,16 @@ export class DeleteEmployeeCommandHandler
 
   async execute({ employeeId }: DeleteEmployeeCommand): Promise<void> {
     const employee = await this.employeeRepository.findOneById(employeeId);
-    if (!employee) throw new Error('Oops | TODO');
+    if (!employee) throw new EmployeeNotFoundError(employeeId);
 
-    const underlings = await this.employeeRepository.findDirectEmployeesOf(
+    const subordinates = await this.employeeRepository.findDirectEmployeesOf(
       employeeId
     );
 
-    underlings.forEach((underling) =>
-      underling.assignManager(employee.directManager)
+    subordinates.forEach((subordinate) =>
+      subordinate.assignManager(employee.directManager)
     );
-    await this.employeeRepository.saveMany(underlings);
+    await this.employeeRepository.saveMany(subordinates);
     await this.employeeRepository.delete(employee);
   }
 }

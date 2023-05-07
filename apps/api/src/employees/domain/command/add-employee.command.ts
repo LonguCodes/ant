@@ -7,6 +7,7 @@ import { Inject } from '@nestjs/common';
 import { IdPayload } from '../../../common/interfaces/id.payload';
 import { EmployeeEntity } from '../entity/employee.entity';
 import { plainToInstance } from 'class-transformer';
+import { EmployeeNotFoundError } from '../error/employee-not-found.error';
 
 export class AddEmployeeCommand {
   constructor(
@@ -43,7 +44,7 @@ export class AddEmployeeCommandHandler
     );
     if (managerId) {
       const manager = await this.employeeRepository.findOneById(managerId);
-      if (!manager) throw new Error('Oops | TODO');
+      if (!manager) throw new EmployeeNotFoundError(managerId);
       entityPayload.assignManager(manager);
     }
 

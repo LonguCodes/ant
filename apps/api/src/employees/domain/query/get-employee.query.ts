@@ -6,6 +6,7 @@ import {
   IEmployeeRepository,
 } from '../repository/employee.repository';
 import { plainToInstance } from 'class-transformer';
+import { EmployeeNotFoundError } from '../error/employee-not-found.error';
 
 export class GetEmployeeQuery {
   constructor(public readonly employeeId: string) {}
@@ -21,6 +22,7 @@ export class GetEmployeeQueryHandler
   ) {}
   async execute({ employeeId }: GetEmployeeQuery): Promise<EmployeeDto> {
     const employee = await this.employeeRepository.findOneById(employeeId);
+    if (!employee) throw new EmployeeNotFoundError(employeeId);
     return plainToInstance(EmployeeDto, employee, { exposeUnsetFields: true });
   }
 }

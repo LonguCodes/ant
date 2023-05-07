@@ -5,6 +5,8 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@golevelup/ts-jest": "^0.3.7",
     "@longucodes/config": "^1.1.8",
     "@longucodes/promise": "^1.4.0",
     "@nestjs/common": "^9.0.0",

@@ -13,12 +13,12 @@ import { DeleteEmployeeCommandHandler } from './domain/command/delete-employee.c
 import { UpdateEmployeeCommandHandler } from './domain/command/update-employee.command';
 import { GetEmployeeQueryHandler } from './domain/query/get-employee.query';
 import { GetEmployeesQueryHandler } from './domain/query/get-employees.query';
-import { GetUnderlingsOfEmployeeQueryHandler } from './domain/query/get-underlings-of-employee.query';
+import { GetSubordinatesOfEmployeeQueryHandler } from './domain/query/get-subordinates-of-employee.query';
 
 const queries = [
   GetEmployeeQueryHandler,
   GetEmployeesQueryHandler,
-  GetUnderlingsOfEmployeeQueryHandler,
+  GetSubordinatesOfEmployeeQueryHandler,
 ];
 const commands = [
   AddEmployeeCommandHandler,

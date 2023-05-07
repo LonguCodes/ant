@@ -6,14 +6,15 @@ import {
   IEmployeeRepository,
 } from '../repository/employee.repository';
 import { plainToInstance } from 'class-transformer';
+import { EmployeeNotFoundError } from '../error/employee-not-found.error';
 
-export class GetUnderlingsOfEmployeeQuery {
+export class GetSubordinatesOfEmployeeQuery {
   constructor(public readonly employeeId: string) {}
 }
 
-@QueryHandler(GetUnderlingsOfEmployeeQuery)
-export class GetUnderlingsOfEmployeeQueryHandler
-  implements IQueryHandler<GetUnderlingsOfEmployeeQuery, EmployeeDto[]>
+@QueryHandler(GetSubordinatesOfEmployeeQuery)
+export class GetSubordinatesOfEmployeeQueryHandler
+  implements IQueryHandler<GetSubordinatesOfEmployeeQuery, EmployeeDto[]>
 {
   constructor(
     @Inject(EMPLOYEE_REPOSITORY)
@@ -21,7 +22,10 @@ export class GetUnderlingsOfEmployeeQueryHandler
   ) {}
   async execute({
     employeeId,
-  }: GetUnderlingsOfEmployeeQuery): Promise<EmployeeDto[]> {
+  }: GetSubordinatesOfEmployeeQuery): Promise<EmployeeDto[]> {
+    const manager = await this.employeeRepository.findOneById(employeeId);
+    if (!manager) throw new EmployeeNotFoundError(employeeId);
+
     const employees = await this.employeeRepository.findDirectEmployeesOf(
       employeeId
     );

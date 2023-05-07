@@ -5,6 +5,7 @@ import {
 } from '../repository/employee.repository';
 import { Inject } from '@nestjs/common';
 import { EmployeeEntity } from '../entity/employee.entity';
+import {EmployeeNotFoundError} from "../error/employee-not-found.error";
 
 export class UpdateEmployeeCommand {
   constructor(
@@ -26,7 +27,7 @@ export class UpdateEmployeeCommandHandler
 
   async execute({ employeeId, payload }: UpdateEmployeeCommand): Promise<void> {
     const employee = await this.employeeRepository.findOneById(employeeId);
-    if (!employee) throw new Error('Oops | TODO');
+    if (!employee) throw new EmployeeNotFoundError(employeeId);
     const updated = Object.assign(employee, payload);
     await this.employeeRepository.save(updated);
   }

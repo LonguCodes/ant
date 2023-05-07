@@ -4,6 +4,7 @@ import {
   EMPLOYEE_REPOSITORY,
   IEmployeeRepository,
 } from '../repository/employee.repository';
+import {EmployeeNotFoundError} from "../error/employee-not-found.error";
 
 export class AssignManagerCommand {
   constructor(
@@ -25,9 +26,9 @@ export class AssignManagerCommandHandler
     managerId,
   }: AssignManagerCommand): Promise<void> {
     const employee = await this.employeeRepository.findOneById(employeeId);
-    if (!employee) throw new Error('Oops | TODO');
+    if (!employee) throw new EmployeeNotFoundError(employeeId);
     const manager = await this.employeeRepository.findOneById(managerId);
-    if (!manager) throw new Error('Oops | TODO');
+    if (!manager) throw new EmployeeNotFoundError(employeeId);
     employee.assignManager(manager);
     await this.employeeRepository.save(employee);
   }

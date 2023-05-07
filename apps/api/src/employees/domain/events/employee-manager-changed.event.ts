@@ -30,19 +30,19 @@ export class EmployeeManagerChangedEventHandler
     employee.allManagerIds = [...manager.allManagerIds, manager.id];
     await this.employeeRepository.save(employee);
 
-    const underlings = await this.employeeRepository.findEmployeesOf(
+    const subordinates = await this.employeeRepository.findEmployeesOf(
       employee.id
     );
 
-    underlings.forEach((underling) => {
-      const employeeManagerIndex = underling.allManagerIds.findIndex(
+    subordinates.forEach((subordinate) => {
+      const employeeManagerIndex = subordinate.allManagerIds.findIndex(
         (managerId) => managerId === employee.id
       );
-      underling.allManagerIds = [
+      subordinate.allManagerIds = [
         ...employee.allManagerIds,
-        ...underling.allManagerIds.slice(employeeManagerIndex),
+        ...subordinate.allManagerIds.slice(employeeManagerIndex),
       ];
     });
-    await this.employeeRepository.saveMany(underlings);
+    await this.employeeRepository.saveMany(subordinates);
   }
 }
