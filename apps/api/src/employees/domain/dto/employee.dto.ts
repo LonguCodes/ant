@@ -19,4 +19,7 @@ export class EmployeeDto {
 
   @Expose()
   firstDayAtWork: string;
+
+  @Expose()
+  teamId: string;
 }

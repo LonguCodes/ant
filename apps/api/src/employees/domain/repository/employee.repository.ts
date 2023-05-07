@@ -4,6 +4,7 @@ export const EMPLOYEE_REPOSITORY = Symbol('employee-repository-token');
 export interface IEmployeeRepository {
   findAll(): Promise<EmployeeEntity[]>;
   findOneById(id: string): Promise<EmployeeEntity | undefined>;
+  findByTeamId(teamId: string): Promise<EmployeeEntity[]>;
   findDirectEmployeesOf(managerId: string): Promise<EmployeeEntity[]>;
   findEmployeesOf(managerId: string): Promise<EmployeeEntity[]>;
   save(employee: EmployeeEntity): Promise<EmployeeEntity>;

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IEmployeeRepository } from '../../domain/repository/employee.repository';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { EmployeeEntity } from '../../domain/entity/employee.entity';
-import { EntityManager, Repository, TreeRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 import {
   DOMAIN_EVENTS_DISPATCHER,
@@ -17,6 +17,10 @@ export class EmployeePostgresRepository implements IEmployeeRepository {
     @Inject(DOMAIN_EVENTS_DISPATCHER)
     private readonly dispatcher: IDomainEventDispatcher
   ) {}
+
+  async findByTeamId(teamId: string): Promise<EmployeeEntity[]> {
+    return this.repository.findBy({ teamId });
+  }
 
   @Transactional()
   async saveMany(
