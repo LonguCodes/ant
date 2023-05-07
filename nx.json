@@ -34,5 +34,6 @@
       "!{projectRoot}/.eslintrc.json"
     ],
     "sharedGlobals": []
-  }
+  },
+  "defaultProject": "api"
 }

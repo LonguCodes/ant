@@ -13,19 +13,19 @@
         "outputPath": "dist/apps/api",
         "main": "apps/api/src/main.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": ["apps/api/src/assets"]
+        "assets": [],
+        "fileReplacements": [
+          {
+            "replace": "apps/api/src/config/entities.config.ts",
+            "with": "apps/api/src/config/entities.config.webpack.ts"
+          }
+        ]
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/api/src/environments/environment.ts",
-              "with": "apps/api/src/environments/environment.prod.ts"
-            }
-          ]
+          "inspect": false
         }
       }
     },
@@ -53,6 +53,34 @@
       "options": {
         "jestConfig": "apps/api/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "migration:create": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api/migrations",
+        "command": "npx ts-node -P ../tsconfig.app.json -r tsconfig-paths/register $(which typeorm) migration:create"
+      }
+    },
+    "migration:run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "command": "npx ts-node -P tsconfig.app.json -r tsconfig-paths/register $(which typeorm) migration:run -d ormconfig.ts"
+      }
+    },
+    "migration:revert": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api",
+        "command": "npx ts-node -P tsconfig.app.json -r tsconfig-paths/register $(which typeorm) migration:revert -d ormconfig.ts"
+      }
+    },
+    "migration:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/api/migrations",
+        "command": "npx ts-node -P ../tsconfig.app.json -r tsconfig-paths/register $(which typeorm) migration:generate -d ../ormconfig.ts"
       }
     }
   },
