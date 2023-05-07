@@ -10,16 +10,15 @@
         "push": true,
         "pull": true,
         "tags": [
-          "docker.longu.dev/ant-api:$ENVIRONMENT-latest",
-          "docker.longu.dev/ant-api:$ENVIRONMENT-$GITHUB_SHA"
+          "docker.longu.dev/ant-api:dev-latest",
+          "docker.longu.dev/ant-api:dev-$GITHUB_SHA"
         ],
         "cache-from": [
-          "docker.longu.dev/ant-api:$ENVIRONMENT-latest"
+          "docker.longu.dev/ant-api:dev-latest"
         ],
         "build-args": [
           "GITHUB_SHA=$GITHUB_SHA",
-          "GITHUB_REF=$GITHUB_REF",
-          "ENV_CFG=$ENVIRONMENT"
+          "GITHUB_REF=$GITHUB_REF"
         ],
         "platforms": ["linux/arm64"],
         "file": "apps/api/Dockerfile"
