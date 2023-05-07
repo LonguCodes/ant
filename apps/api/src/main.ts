@@ -5,6 +5,7 @@
 
 import '@longucodes/promise';
 import {
+  INestApplication,
   Logger,
   ValidationPipe,
   VERSION_NEUTRAL,
@@ -14,6 +15,17 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import { initializeTransactionalContext } from 'typeorm-transactional';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+function swaggerSetup(app: INestApplication) {
+  const config = new DocumentBuilder()
+    .setTitle('Employees API')
+    .setDescription('API for managing the employee structure')
+    .setVersion('0.0.1')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+}
 
 async function bootstrap() {
   initializeTransactionalContext();
@@ -35,6 +47,8 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     })
   );
+
+  swaggerSetup(app);
 
   const port = process.env.PORT || 3333;
   await app.listen(port);
