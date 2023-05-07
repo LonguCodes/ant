@@ -4,6 +4,27 @@
   "sourceRoot": "apps/api/src",
   "projectType": "application",
   "targets": {
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "options": {
+        "push": true,
+        "pull": true,
+        "tags": [
+          "docker.longu.dev/ant-api:$ENVIRONMENT-latest",
+          "docker.longu.dev/ant-api:$ENVIRONMENT-$GITHUB_SHA"
+        ],
+        "cache-from": [
+          "docker.longu.dev/ant-api:$ENVIRONMENT-latest"
+        ],
+        "build-args": [
+          "GITHUB_SHA=$GITHUB_SHA",
+          "GITHUB_REF=$GITHUB_REF",
+          "ENV_CFG=$ENVIRONMENT"
+        ],
+        "platforms": ["linux/arm64"],
+        "file": "apps/api/Dockerfile"
+      }
+    },
     "build": {
       "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
